@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-03-2025 a las 21:45:10
+-- Tiempo de generación: 24-03-2025 a las 15:37:14
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -30,7 +30,6 @@ SET time_zone = "+00:00";
 CREATE TABLE `dates` (
   `id_date` int(11) NOT NULL,
   `id_user` int(11) DEFAULT NULL,
-  `id_doctor` int(11) DEFAULT NULL,
   `id_timetable` int(11) DEFAULT NULL,
   `date_time` datetime NOT NULL,
   `status` enum('pending','confirmed','cancelled') DEFAULT 'pending',
@@ -57,9 +56,9 @@ CREATE TABLE `specialties` (
 
 CREATE TABLE `timetable` (
   `id_timetable` int(11) NOT NULL,
-  `id_doctor` int(11) DEFAULT NULL,
-  `start_time` time NOT NULL,
-  `end_time` time NOT NULL,
+  `id_user` int(11) DEFAULT NULL,
+  `hour` time NOT NULL,
+  `duration` int(11) NOT NULL COMMENT 'Duración en minutos',
   `weekday` enum('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -87,6 +86,7 @@ CREATE TABLE `users` (
 --
 
 CREATE TABLE `user_specialty` (
+  `id_user_specialty` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
   `id_specialty` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -101,35 +101,33 @@ CREATE TABLE `user_specialty` (
 ALTER TABLE `dates`
   ADD PRIMARY KEY (`id_date`),
   ADD KEY `id_user` (`id_user`),
-  ADD KEY `id_doctor` (`id_doctor`),
   ADD KEY `id_timetable` (`id_timetable`);
 
 --
 -- Indices de la tabla `specialties`
 --
 ALTER TABLE `specialties`
-  ADD PRIMARY KEY (`id_specialty`),
-  ADD UNIQUE KEY `name` (`name`);
+  ADD PRIMARY KEY (`id_specialty`);
 
 --
 -- Indices de la tabla `timetable`
 --
 ALTER TABLE `timetable`
   ADD PRIMARY KEY (`id_timetable`),
-  ADD KEY `id_doctor` (`id_doctor`);
+  ADD KEY `id_doctor` (`id_user`);
 
 --
 -- Indices de la tabla `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id_user`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD PRIMARY KEY (`id_user`);
 
 --
 -- Indices de la tabla `user_specialty`
 --
 ALTER TABLE `user_specialty`
-  ADD PRIMARY KEY (`id_user`,`id_specialty`),
+  ADD PRIMARY KEY (`id_user_specialty`),
+  ADD KEY `id_user` (`id_user`),
   ADD KEY `id_specialty` (`id_specialty`);
 
 --
@@ -161,6 +159,12 @@ ALTER TABLE `users`
   MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `user_specialty`
+--
+ALTER TABLE `user_specialty`
+  MODIFY `id_user_specialty` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- Restricciones para tablas volcadas
 --
 
@@ -169,14 +173,13 @@ ALTER TABLE `users`
 --
 ALTER TABLE `dates`
   ADD CONSTRAINT `dates_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE CASCADE,
-  ADD CONSTRAINT `dates_ibfk_2` FOREIGN KEY (`id_doctor`) REFERENCES `users` (`id_user`) ON DELETE CASCADE,
-  ADD CONSTRAINT `dates_ibfk_3` FOREIGN KEY (`id_timetable`) REFERENCES `timetable` (`id_timetable`);
+  ADD CONSTRAINT `dates_ibfk_3` FOREIGN KEY (`id_timetable`) REFERENCES `timetable` (`id_timetable`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `timetable`
 --
 ALTER TABLE `timetable`
-  ADD CONSTRAINT `timetable_ibfk_1` FOREIGN KEY (`id_doctor`) REFERENCES `users` (`id_user`) ON DELETE CASCADE;
+  ADD CONSTRAINT `timetable_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `user_specialty`

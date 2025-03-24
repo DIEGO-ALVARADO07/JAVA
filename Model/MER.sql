@@ -1,7 +1,6 @@
 CREATE TABLE `dates` (
   `id_date` int(11) PRIMARY KEY NOT NULL,
   `id_user` int(11) DEFAULT null,
-  `id_doctor` int(11) DEFAULT null,
   `id_timetable` int(11) DEFAULT null,
   `date_time` datetime NOT NULL,
   `status` ENUM ('pending', 'confirmed', 'cancelled') DEFAULT 'pending',
@@ -16,9 +15,9 @@ CREATE TABLE `specialties` (
 
 CREATE TABLE `timetable` (
   `id_timetable` int(11) PRIMARY KEY NOT NULL,
-  `id_doctor` int(11) DEFAULT null,
-  `start_time` time NOT NULL,
-  `end_time` time NOT NULL,
+  `id_user` int(11) DEFAULT null,
+  `hour` time NOT NULL,
+  `duration` int(11) NOT NULL COMMENT 'Duración en minutos',
   `weekday` ENUM ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL
 );
 
@@ -41,11 +40,9 @@ CREATE TABLE `user_specialty` (
 
 ALTER TABLE `dates` ADD CONSTRAINT `dates_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE CASCADE;
 
-ALTER TABLE `dates` ADD CONSTRAINT `dates_ibfk_2` FOREIGN KEY (`id_doctor`) REFERENCES `users` (`id_user`) ON DELETE CASCADE;
-
 ALTER TABLE `dates` ADD CONSTRAINT `dates_ibfk_3` FOREIGN KEY (`id_timetable`) REFERENCES `timetable` (`id_timetable`) ON DELETE CASCADE;
 
-ALTER TABLE `timetable` ADD CONSTRAINT `timetable_ibfk_1` FOREIGN KEY (`id_doctor`) REFERENCES `users` (`id_user`) ON DELETE CASCADE;
+ALTER TABLE `timetable` ADD CONSTRAINT `timetable_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE CASCADE;
 
 ALTER TABLE `user_specialty` ADD CONSTRAINT `user_specialty_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE CASCADE;
 
