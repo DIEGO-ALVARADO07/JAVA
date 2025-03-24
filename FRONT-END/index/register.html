@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Gestor de Citas Médicas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #2d9cdb;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h3 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #555;
+        }
+
+        input[type="email"], input[type="password"], select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #2d9cdb;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1d7ca6;
+        }
+
+        p {
+            text-align: center;
+            color: #777;
+        }
+
+        a {
+            color: #2d9cdb;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Gestor de Citas Médicas</h1>
+    </header>
+
+    <section class="container">
+        <form action="/register" method="POST">
+            <h3>Registrarse</h3>
+            
+            <!-- Formulario de Registro -->
+            <label for="email-register">Correo Electrónico:</label>
+            <input type="email" id="email-register" name="email" required>
+            
+            <label for="password-register">Contraseña:</label>
+            <input type="password" id="password-register" name="password" required>
+            
+            <label for="role">Selecciona tu rol:</label>
+            <select id="role" name="role" required>
+                <option value="medico">Médico</option>
+                <option value="paciente">Paciente</option>
+                <option value="administrador">Administrador</option>
+            </select>
+            
+            <button type="submit">Registrarse</button>
+        </form>
+    </section>
+
+
+    <div class="form-link">
+        <p>¿Ya tienes cuenta? <a href="/FRONT-END/index/index.html" onclick="toggleForms()">Inicia sesión aquí</a></p>
+    </div>
+
+ 
+</body>
+</html>
